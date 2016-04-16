@@ -1,0 +1,58 @@
+{% extends "bootstrap/base.html"  %}
+
+{% block title %}
+<head>
+    {% if title %}
+    <title>{{title}} - microblog</title>
+    {% else %}
+    <title>microblog</title>
+    {% endif %}
+</head>
+{% endblock %}
+
+<body>
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                {% if not current_user.is_authenticated() %}
+                <li><a href="{{ url_for('login') }}">Log in</a></li>
+                {% else %}
+                <li><a href="{{ url_for("users", user_id = current_user.id) }}">Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{#
+# disappear message about flash function define in view.py
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endwith %}
+#}
+<div class="container">
+  {% block page_content %}{% endblock %}
+</div>
+{% block js %}{% endblock %}
+{% endblock %}
+</body>
